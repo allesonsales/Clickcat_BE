@@ -23,34 +23,16 @@ const imageStorage = multer.diskStorage({
   },
 });
 
-const multerInstance = multer({
+const imageUpload = multer({
   storage: imageStorage,
-  fileFilter: (req, file, cb) => {
+  fileFilter: (req, res, file, cb) => {
     if (!file.originalname.match(/\.(png|jpe?g)$/i)) {
-      return cb(new Error("Envie apenas arquivos jpg ou png"));
+      return res
+        .status(400)
+        .json({ message: "Envie pelo menos uma imagem válida (jpg ou png)" });
     }
-    cb(null, true);
+    cb(undefined, true);
   },
 });
-
-const imageUpload =
-  (fieldName, maxCount = 10) =>
-  (req, res, next) => {
-    const upload = multerInstance.array(fieldName, maxCount);
-
-    upload(req, res, (err) => {
-      if (err) {
-        return res.status(400).json({ message: err.message });
-      }
-
-      if (!req.files || req.files.length === 0) {
-        return res
-          .status(400)
-          .json({ message: "Envie pelo menos uma imagem válida (jpg ou png)" });
-      }
-
-      next();
-    });
-  };
 
 export default imageUpload;

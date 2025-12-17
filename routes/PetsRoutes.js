@@ -7,7 +7,7 @@ const router = express.Router();
 router.post(
   "/cadastrar",
   checkToken,
-  imageUpload("fotos"),
+  imageUpload.array("fotos"),
   PetController.cadastrarPet
 );
 router.get("/", PetController.listarPets);
