@@ -1,6 +1,8 @@
 import jwt from "jsonwebtoken";
 import getToken from "./get-token.js";
 
+const COOKIE_SECRET = process.env.COOKIE_SECRET;
+
 const checkToken = (req, res, next) => {
   const token = getToken(req);
 
@@ -9,7 +11,7 @@ const checkToken = (req, res, next) => {
   }
 
   try {
-    const verified = jwt.verify(token, "segredo");
+    const verified = jwt.verify(token, COOKIE_SECRET);
     req.user = verified;
     next();
   } catch (err) {
