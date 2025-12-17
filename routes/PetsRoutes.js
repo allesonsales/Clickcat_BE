@@ -2,13 +2,12 @@ import express from "express";
 import PetController from "../controller/PetsController.js";
 import checkToken from "../helpers/verify-token.js";
 import imageUpload from "../helpers/image-upload.js";
-import logoutFunction from "../helpers/logout.js";
 const router = express.Router();
 
 router.post(
   "/cadastrar",
   checkToken,
-  imageUpload.array("fotos"),
+  imageUpload("fotos"),
   PetController.cadastrarPet
 );
 router.get("/", PetController.listarPets);
