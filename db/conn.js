@@ -4,7 +4,7 @@ const MONGO_URL_DB = process.env.MONGO_URL_DB;
 
 async function connectDB() {
   try {
-    await mongoose.connect(`${MONGO_URI}`);
+    await mongoose.connect(`${MONGO_URL_DB}`);
     console.log("Conectado ao banco de dados");
   } catch (err) {
     console.error(err);
