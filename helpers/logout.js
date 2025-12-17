@@ -1,7 +1,7 @@
 const logoutFunction = (req, res) => {
   res.clearCookie("token", {
     httpOnly: true,
-    sameStrict: "strict",
+    sameSite: "strict",
     secure: process.env.NODE_ENV === "production",
   });
 

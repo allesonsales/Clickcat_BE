@@ -2,6 +2,7 @@ import User from "../models/Users.js";
 import bcrypt from "bcrypt";
 import createUserToken from "../helpers/create-user-token.js";
 import getToken from "../helpers/get-token.js";
+import logoutFunction from "../helpers/logout.js";
 import jwt from "jsonwebtoken";
 
 class UserController {
@@ -94,8 +95,6 @@ class UserController {
 
       const usuarioEncontrado = await User.findOne({ email: email });
 
-      console.log(usuarioEncontrado);
-
       if (!usuarioEncontrado) {
         return res.status(401).json({ message: "E-mail não cadastrado" });
       }
@@ -112,7 +111,7 @@ class UserController {
 
       createUserToken(usuarioEncontrado, req, res);
     } catch (err) {
-      console.error(err);
+      console.error("erro no login", err);
     }
   }
 
@@ -128,7 +127,7 @@ class UserController {
 
       return res.status(200).json(usuario);
     } catch (error) {
-      console.log(error);
+      console.error(error);
       return res.status(400).json({ message: "Erro ao buscar usuário!" });
     }
   }
@@ -155,11 +154,9 @@ class UserController {
         dadosAtualizados
       );
 
-      console.log(usuarioAtualizado);
-
       return res.status(200).json({ message: "Perfil foi atualizado!" });
     } catch (err) {
-      console.log(err);
+      console.error(err);
       return res.status(400).json({ message: "Erro ao atualizar perfil!" });
     }
   }
@@ -206,7 +203,7 @@ class UserController {
             message: "E-mail atualizado com sucesso!",
           });
         } catch (error) {
-          console.log(error);
+          console.error(error);
         }
       }
 
@@ -237,7 +234,7 @@ class UserController {
         });
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   }
 
@@ -246,6 +243,10 @@ class UserController {
       const { senha, id } = req.body;
 
       const usuario = await User.findById(id);
+
+      if (!usuario) {
+        return res.status(404).json({ message: "Usuário não encontrado!" });
+      }
 
       const matchSenha = await bcrypt.compare(senha, usuario.senha);
 
@@ -261,7 +262,7 @@ class UserController {
         .status(200)
         .json({ message: "Sua conta foi excluída com sucesso!" });
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
   }
 

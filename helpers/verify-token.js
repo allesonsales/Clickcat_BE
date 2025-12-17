@@ -2,8 +2,6 @@ import jwt from "jsonwebtoken";
 import getToken from "./get-token.js";
 
 const checkToken = (req, res, next) => {
-  console.log(req.headers);
-
   const token = getToken(req);
 
   if (!token) {

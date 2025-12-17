@@ -10,8 +10,6 @@ class PetController {
 
       const usuario = await User.findById(id);
 
-      console.log(usuario);
-
       let { nome, idade, tipo, peso, cor, temperamento, historia } = req.body;
 
       const fotos = req.files;
@@ -70,11 +68,9 @@ class PetController {
   static async listarPets(req, res) {
     try {
       const pets = await Pet.find({ adotado: false }).sort("createdAt");
-
-      console.log(pets);
       return res.status(200).json(pets);
     } catch (err) {
-      console.log(err);
+      console.error(err);
       return res.status(400).json({ message: "Erro ao buscar pets!" });
     }
   }
@@ -93,7 +89,7 @@ class PetController {
 
       return res.status(200).json(pet);
     } catch (err) {
-      console.log(err);
+      console.error(err);
       return res.status(400).json({ message: "Erro ao buscar pet!" });
     }
   }
@@ -101,13 +97,12 @@ class PetController {
   static async listarMeusPets(req, res) {
     try {
       const userId = req.user.id;
-      console.log(userId);
 
       const pets = await Pet.find({ "usuario._id": userId }).sort("-createdAt");
 
       return res.status(200).json(pets);
     } catch (error) {
-      console.log(error);
+      console.error(error);
       return res.status(400).json({ message: "Erro ao buscar Pets!" });
     }
   }
@@ -116,8 +111,6 @@ class PetController {
     try {
       const id = req.params.id;
       const userId = req.user.id;
-      console.log(userId);
-
       const pet = await Pet.findById(id);
 
       if (!pet) {
@@ -144,7 +137,7 @@ class PetController {
         .status(200)
         .json({ message: `Parabéns, o(a) ${pet.nome} foi adotado(a)!` });
     } catch (err) {
-      console.log(err);
+      console.error(err);
       return res.status(422).json({ message: "Erro ao adotar!" });
     }
   }
@@ -157,7 +150,7 @@ class PetController {
 
       return res.status(200).json(pets);
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
   }
 
@@ -196,7 +189,7 @@ class PetController {
 
       return res.status(200).json({ message: "Pet atualizado com sucesso" });
     } catch (err) {
-      console.log(err);
+      console.error(err);
       return res.status(400).json({ message: "Erro ao atualizar pet!" });
     }
   }
@@ -218,7 +211,7 @@ class PetController {
 
       return res.status(200).json({ message: "Pet excluído com sucesso!" });
     } catch (err) {
-      console.log(err);
+      console.error(err);
       return res.status(400).json({ message: "Erro ao excluir Pet!" });
     }
   }

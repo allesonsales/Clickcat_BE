@@ -21,7 +21,7 @@ const createUserToken = async (user, req, res) => {
     message: `Seja bem-vindo ${user.nome.split(` `)[0]}`,
     user: {
       name: user.nome,
-      userId: user._id,
+      id: user._id,
       foto: user.foto,
     },
   });
