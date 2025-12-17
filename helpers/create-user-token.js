@@ -1,5 +1,7 @@
 import jwt from "jsonwebtoken";
 
+const COOKIE_SECRET = process.env.COOKIE_SECRET;
+
 const createUserToken = async (user, req, res) => {
   const token = jwt.sign(
     {
@@ -7,13 +9,13 @@ const createUserToken = async (user, req, res) => {
       id: user._id,
       foto: user.foto,
     },
-    "segredo"
+    COOKIE_SECRET
   );
 
   res.cookie("token", token, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
-    sameSite: "strict",
+    sameSite: "none",
     maxAge: 1000 * 60 * 60 * 24, // 1 dia
   });
 
