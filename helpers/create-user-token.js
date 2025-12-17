@@ -3,6 +3,7 @@ import jwt from "jsonwebtoken";
 const COOKIE_SECRET = process.env.COOKIE_SECRET;
 
 const createUserToken = async (user, req, res) => {
+  console.log("USER RECEBIDO:", user);
   const token = jwt.sign(
     {
       nome: user.nome,
@@ -20,9 +21,9 @@ const createUserToken = async (user, req, res) => {
   });
 
   return res.status(200).json({
-    message: `Seja bem-vindo ${user.nome.split(` `)[0]}`,
+    message: `Seja bem-vindo ${user?.nome?.split(" ")[0]}`,
     user: {
-      name: user.nome,
+      nome: user.nome,
       id: user._id,
       foto: user.foto,
     },
